@@ -1,0 +1,8 @@
+.git/
+.dockerignore
+.gitignore
+.travis.yml
+docker-compose.*.yml
+terraform-provider-test
+Dockerfile
+README.md
