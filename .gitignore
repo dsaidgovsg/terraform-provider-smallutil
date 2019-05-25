@@ -1,1 +1,5 @@
-terraform-provider-test
+terraform-provider-smallutil
+
+tf_test/*
+!tf_test/main.tf
+!tf_test/server/main.go
