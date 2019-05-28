@@ -18,12 +18,19 @@ matrix:
 {%- endfor %}
   
 script:
+- go test ./...
 - env GOOS=${GOOS} GOARCH=${GOARCH} go build -v -ldflags "${LDFLAGS}"
 - mv ${REPO_NAME} ${REPO_NAME}_${GOOS}_${GOARCH}
-# - |-
-#   ghr -t ${GITHUB_TOKEN} -u ${REPO_OWNER} -r ${REPO_NAME} \
-#   -c ${CF_REVISION} -replace ${TAG_NAME} ltrigger.zip
+
+deploy:
+  provider: releases
+  api_key: "${GITHUB_TOKEN}"
+  file: "${REPO_NAME}_${GOOS}_${GOARCH}"
+  skip_cleanup: true
+  on:
+    tags: true
 
 branches:
   only:
   - master
+  - /^v\d+\.\d+\.\d+(-\S*)?$/
