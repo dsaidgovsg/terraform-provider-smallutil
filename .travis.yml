@@ -1,0 +1,35 @@
+language: go
+
+go:
+- 1.11.x
+
+env:
+  global:
+  - REPO_OWNER=guangie88
+  - REPO_NAME=terraform-provider-smallutil
+
+matrix:
+  include:
+    env:
+    - GOOS="linux"
+    - GOARCHS="386 amd64 arm arm64"
+    env:
+    - GOOS="darwin"
+    - GOARCHS="386 amd64 arm arm64"
+    env:
+    - GOOS="windows"
+    - GOARCHS="386 amd64"
+  
+script:
+- |-
+  for GOARCH in ${GOARCHS}; do
+    env GOOS=${GOOS} GOARCH=${GOARCH} go build -v -ldflags "-linkmode external -extldflags -static -s -w"
+    mv ${REPO_NAME} ${REPO_NAME}_${GOOS}_${GOARCH}
+  done
+# - |-
+#   ghr -t ${GITHUB_TOKEN} -u ${REPO_OWNER} -r ${REPO_NAME} \
+#   -c ${CF_REVISION} -replace ${TAG_NAME} ltrigger.zip
+
+branches:
+  only:
+  - master
