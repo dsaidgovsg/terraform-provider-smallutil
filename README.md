@@ -4,6 +4,55 @@
 
 Small utility Terraform provider for command-like data source conveniences.
 
+Currently the following data sources are supported:
+
+- `smallutil_http_req`
+  - Performs a HTTP request (think `curl`) to obtain a value. Currently only
+    `text/plain` and `application/json` are supported, and only string value
+    from one level of object nesting is supported. This data source allows for
+    both `override` value (i.e. if specified, it will just use this value) and
+    also `default` value (i.e. if specified, if the HTTP request fails, it will
+    fall back to this value).
+
+## How to install
+
+You can simply visit the
+[Releases](https://github.com/guangie88/terraform-provider-smallutil/releases)
+page and download the zip file corresponding to your OS and architecture.
+
+Unzip the plugin binary into `~/.terraform.d/plugins`, or
+`%APPDATA%\terraform.d\plugins` for Windows. You may check the official
+[guide](https://www.terraform.io/docs/plugins/basics.html#installing-plugins)
+
+If you prefer to build the plugin from scratch, follow the step
+[here](#how-to-build).
+
+## Terraform `.tf` Example
+
+```tf
+provider "smallutil" {}
+
+data "smallutil_http_req" "plain_tag" {
+  url = "http://localhost:8080/plain"
+}
+
+data "smallutil_http_req" "json_tag" {
+  url                       = "http://localhost:8080/json"
+  response_content_type     = "application/json"
+  response_content_json_key = ".tag"
+}
+
+data "smallutil_http_req" "failed_tag" {
+  url     = "http://localhost:8080/no-such-endpoint"
+  default = "failed-tag"
+}
+
+data "smallutil_http_req" "override_tag" {
+  url      = "http://localhost:8080/no-such-endpoint"
+  override = "override-tag"
+}
+```
+
 ## How to build
 
 You will need Go compiler >= 1.11 (because this use Go modules).

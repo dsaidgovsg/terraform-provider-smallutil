@@ -54,12 +54,12 @@ matrix:
 script:
 - go test ./...
 - env GOOS=${GOOS} GOARCH=${GOARCH} go build -v -ldflags "${LDFLAGS}"
-- mv ${REPO_NAME} ${REPO_NAME}_${GOOS}_${GOARCH}
+- zip -j ${REPO_NAME}_${GOOS}_${GOARCH}.zip ${REPO_NAME}
 
 deploy:
   provider: releases
   api_key: "${GITHUB_TOKEN}"
-  file: "${REPO_NAME}_${GOOS}_${GOARCH}"
+  file: "${REPO_NAME}_${GOOS}_${GOARCH}.zip"
   skip_cleanup: true
   on:
     tags: true
