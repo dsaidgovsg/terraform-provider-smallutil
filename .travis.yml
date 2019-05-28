@@ -12,20 +12,48 @@ matrix:
   include:
     - env:
       - GOOS="linux"
-      - GOARCHS="386 amd64 arm arm64"
+      - GOARCH="386"
+      - LDFLAGS="-linkmode external -extldflags -static -s -w"
+    - env:
+      - GOOS="linux"
+      - GOARCH="amd64"
+      - LDFLAGS="-linkmode external -extldflags -static -s -w"
+    - env:
+      - GOOS="linux"
+      - GOARCH="arm"
+      - LDFLAGS="-linkmode external -extldflags -static -s -w"
+    - env:
+      - GOOS="linux"
+      - GOARCH="arm64"
+      - LDFLAGS="-linkmode external -extldflags -static -s -w"
     - env:
       - GOOS="darwin"
-      - GOARCHS="386 amd64 arm arm64"
+      - GOARCH="386"
+      - LDFLAGS="-linkmode external -extldflags -static -s -w"
+    - env:
+      - GOOS="darwin"
+      - GOARCH="amd64"
+      - LDFLAGS="-linkmode external -extldflags -static -s -w"
+    - env:
+      - GOOS="darwin"
+      - GOARCH="arm"
+      - LDFLAGS="-linkmode external -extldflags -static -s -w"
+    - env:
+      - GOOS="darwin"
+      - GOARCH="arm64"
+      - LDFLAGS="-linkmode external -extldflags -static -s -w"
     - env:
       - GOOS="windows"
-      - GOARCHS="386 amd64"
+      - GOARCH="386"
+      - LDFLAGS="-linkmode external -extldflags -static -s -w"
+    - env:
+      - GOOS="windows"
+      - GOARCH="amd64"
+      - LDFLAGS="-linkmode external -extldflags -static -s -w"
   
 script:
-- |-
-  for GOARCH in ${GOARCHS}; do
-    env GOOS=${GOOS} GOARCH=${GOARCH} go build -v -ldflags "-linkmode external -extldflags -static -s -w"
-    mv ${REPO_NAME} ${REPO_NAME}_${GOOS}_${GOARCH}
-  done
+- env GOOS=${GOOS} GOARCH=${GOARCH} go build -v -ldflags "${LDFLAGS}"
+- mv ${REPO_NAME} ${REPO_NAME}_${GOOS}_${GOARCH}
 # - |-
 #   ghr -t ${GITHUB_TOKEN} -u ${REPO_OWNER} -r ${REPO_NAME} \
 #   -c ${CF_REVISION} -replace ${TAG_NAME} ltrigger.zip

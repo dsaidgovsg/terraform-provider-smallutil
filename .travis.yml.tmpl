@@ -13,15 +13,13 @@ matrix:
 {%- for v in c %}
     - env:
       - GOOS="{{ v.goos }}"
-      - GOARCHS="{{ v.goarchs | join(sep=" ") }}"
+      - GOARCH="{{ v.goarch }}"
+      - LDFLAGS="{{ v.ldflags }}"
 {%- endfor %}
   
 script:
-- |-
-  for GOARCH in ${GOARCHS}; do
-    env GOOS=${GOOS} GOARCH=${GOARCH} go build -v -ldflags "-linkmode external -extldflags -static -s -w"
-    mv ${REPO_NAME} ${REPO_NAME}_${GOOS}_${GOARCH}
-  done
+- env GOOS=${GOOS} GOARCH=${GOARCH} go build -v -ldflags "${LDFLAGS}"
+- mv ${REPO_NAME} ${REPO_NAME}_${GOOS}_${GOARCH}
 # - |-
 #   ghr -t ${GITHUB_TOKEN} -u ${REPO_OWNER} -r ${REPO_NAME} \
 #   -c ${CF_REVISION} -replace ${TAG_NAME} ltrigger.zip
