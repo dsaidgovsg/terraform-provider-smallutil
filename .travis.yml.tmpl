@@ -11,9 +11,9 @@ env:
 matrix:
   include:
 {%- for v in c %}
-    env:
-    - GOOS="{{ v.goos }}"
-    - GOARCHS="{{ v.goarchs | join(sep=" ") }}"
+    - env:
+      - GOOS="{{ v.goos }}"
+      - GOARCHS="{{ v.goarchs | join(sep=" ") }}"
 {%- endfor %}
   
 script:
