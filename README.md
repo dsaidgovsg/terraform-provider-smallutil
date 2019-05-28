@@ -1,5 +1,7 @@
 # terraform-provider-smallutil
 
+[![Build Status](https://travis-ci.org/guangie88/terraform-provider-smallutil.svg?branch=master)](https://travis-ci.org/guangie88/terraform-provider-smallutil)
+
 Small utility Terraform provider for command-like data source conveniences.
 
 ## How to build
