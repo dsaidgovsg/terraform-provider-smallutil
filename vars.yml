@@ -1,0 +1,39 @@
+- goos: linux
+  goarch: '386'
+  ldflags: '-linkmode external -extldflags -static -s -w'
+  
+- goos: linux
+  goarch: 'amd64'
+  ldflags: '-linkmode external -extldflags -static -s -w'
+  
+- goos: linux
+  goarch: 'arm'
+  ldflags: '-linkmode external -extldflags -static -s -w'
+  
+- goos: linux
+  goarch: 'arm64'
+  ldflags: '-linkmode external -extldflags -static -s -w'
+
+- goos: darwin
+  goarch: '386'
+  ldflags: '-linkmode external -extldflags -static -s -w'
+  
+- goos: darwin
+  goarch: 'amd64'
+  ldflags: '-linkmode external -extldflags -static -s -w'
+  
+- goos: darwin
+  goarch: 'arm'
+  ldflags: '-linkmode external -extldflags -static -s -w'
+  
+- goos: darwin
+  goarch: 'arm64'
+  ldflags: '-linkmode external -extldflags -static -s -w'
+
+- goos: windows
+  goarch: '386'
+  ldflags: '-linkmode external -extldflags -static -s -w'
+  
+- goos: windows
+  goarch: 'amd64'
+  ldflags: '-linkmode external -extldflags -static -s -w'

@@ -1,0 +1,70 @@
+language: go
+
+go:
+- 1.11.x
+
+env:
+  global:
+  - REPO_OWNER=guangie88
+  - REPO_NAME=terraform-provider-smallutil
+
+matrix:
+  include:
+    - env:
+      - GOOS="linux"
+      - GOARCH="386"
+      - LDFLAGS="-linkmode external -extldflags -static -s -w"
+    - env:
+      - GOOS="linux"
+      - GOARCH="amd64"
+      - LDFLAGS="-linkmode external -extldflags -static -s -w"
+    - env:
+      - GOOS="linux"
+      - GOARCH="arm"
+      - LDFLAGS="-linkmode external -extldflags -static -s -w"
+    - env:
+      - GOOS="linux"
+      - GOARCH="arm64"
+      - LDFLAGS="-linkmode external -extldflags -static -s -w"
+    - env:
+      - GOOS="darwin"
+      - GOARCH="386"
+      - LDFLAGS="-linkmode external -extldflags -static -s -w"
+    - env:
+      - GOOS="darwin"
+      - GOARCH="amd64"
+      - LDFLAGS="-linkmode external -extldflags -static -s -w"
+    - env:
+      - GOOS="darwin"
+      - GOARCH="arm"
+      - LDFLAGS="-linkmode external -extldflags -static -s -w"
+    - env:
+      - GOOS="darwin"
+      - GOARCH="arm64"
+      - LDFLAGS="-linkmode external -extldflags -static -s -w"
+    - env:
+      - GOOS="windows"
+      - GOARCH="386"
+      - LDFLAGS="-linkmode external -extldflags -static -s -w"
+    - env:
+      - GOOS="windows"
+      - GOARCH="amd64"
+      - LDFLAGS="-linkmode external -extldflags -static -s -w"
+  
+script:
+- go test ./...
+- env GOOS=${GOOS} GOARCH=${GOARCH} go build -v -ldflags "${LDFLAGS}"
+- zip -j ${REPO_NAME}_${GOOS}_${GOARCH}.zip ${REPO_NAME}
+
+deploy:
+  provider: releases
+  api_key: "${GITHUB_TOKEN}"
+  file: "${REPO_NAME}_${GOOS}_${GOARCH}.zip"
+  skip_cleanup: true
+  on:
+    tags: true
+
+branches:
+  only:
+  - master
+  - /^v\d+\.\d+\.\d+(-\S*)?$/
