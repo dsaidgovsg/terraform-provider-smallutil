@@ -11,57 +11,59 @@ env:
 matrix:
   fast_finish: true
   include:
+  # Do not use GOOS and GOARCH because Travis will reinitialize these env vars
+  # when bootstrapping Golang set-up
   - env:
-    - GOOS=linux
-    - GOARCH=386
-    - LDFLAGS=
+    - goos=linux
+    - goarch=386
+    - ldflags=
   - env:
-    - GOOS=linux
-    - GOARCH=amd64
-    - LDFLAGS=-linkmode external -extldflags -static -s -w
+    - goos=linux
+    - goarch=amd64
+    - ldflags=-linkmode external -extldflags -static -s -w
   - env:
-    - GOOS=linux
-    - GOARCH=arm
-    - LDFLAGS=
+    - goos=linux
+    - goarch=arm
+    - ldflags=
   - env:
-    - GOOS=linux
-    - GOARCH=arm64
-    - LDFLAGS=
+    - goos=linux
+    - goarch=arm64
+    - ldflags=
   - env:
-    - GOOS=darwin
-    - GOARCH=386
-    - LDFLAGS=
+    - goos=darwin
+    - goarch=386
+    - ldflags=
   - env:
-    - GOOS=darwin
-    - GOARCH=amd64
-    - LDFLAGS=
+    - goos=darwin
+    - goarch=amd64
+    - ldflags=
   - env:
-    - GOOS=darwin
-    - GOARCH=arm
-    - LDFLAGS=
+    - goos=darwin
+    - goarch=arm
+    - ldflags=
   - env:
-    - GOOS=darwin
-    - GOARCH=arm64
-    - LDFLAGS=
+    - goos=darwin
+    - goarch=arm64
+    - ldflags=
   - env:
-    - GOOS=windows
-    - GOARCH=386
-    - LDFLAGS=
+    - goos=windows
+    - goarch=386
+    - ldflags=
   - env:
-    - GOOS=windows
-    - GOARCH=amd64
-    - LDFLAGS=
+    - goos=windows
+    - goarch=amd64
+    - ldflags=
 
 script:
-- printf -- "--------\n${GOOS}_${GOARCH} (ldflag \"${LDFLAGS}\")\n--------\n"
+- printf -- "--------\n${goos}_${goarch} (ldflag \"${ldflags}\")\n--------\n"
 - go test ./...
-- go build -v -ldflags "${LDFLAGS}"
-- zip -j ${REPO_NAME}_${GOOS}_${GOARCH}.zip ${REPO_NAME}
+- env goos=${goos} goarch=${goarch} go build -v -ldflags "${ldflags}"
+- zip -j ${REPO_NAME}_${goos}_${goarch}.zip ${REPO_NAME}
 
 deploy:
   provider: releases
   api_key: "${GITHUB_TOKEN}"
-  file: "${REPO_NAME}_${GOOS}_${GOARCH}.zip"
+  file: "${REPO_NAME}_${goos}_${goarch}.zip"
   skip_cleanup: true
   on:
     tags: true

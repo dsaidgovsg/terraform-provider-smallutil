@@ -11,23 +11,25 @@ env:
 matrix:
   fast_finish: true
   include:
+  # Do not use GOOS and GOARCH because Travis will reinitialize these env vars
+  # when bootstrapping Golang set-up
 {%- for v in c %}
   - env:
-    - GOOS={{ v.goos }}
-    - GOARCH={{ v.goarch }}
-    - LDFLAGS={{ v.ldflags }}
+    - goos={{ v.goos }}
+    - goarch={{ v.goarch }}
+    - ldflags={{ v.ldflags }}
 {%- endfor %}
 
 script:
-- printf -- "--------\n${GOOS}_${GOARCH} (ldflag \"${LDFLAGS}\")\n--------\n"
+- printf -- "--------\n${goos}_${goarch} (ldflag \"${ldflags}\")\n--------\n"
 - go test ./...
-- go build -v -ldflags "${LDFLAGS}"
-- zip -j ${REPO_NAME}_${GOOS}_${GOARCH}.zip ${REPO_NAME}
+- env goos=${goos} goarch=${goarch} go build -v -ldflags "${ldflags}"
+- zip -j ${REPO_NAME}_${goos}_${goarch}.zip ${REPO_NAME}
 
 deploy:
   provider: releases
   api_key: "${GITHUB_TOKEN}"
-  file: "${REPO_NAME}_${GOOS}_${GOARCH}.zip"
+  file: "${REPO_NAME}_${goos}_${goarch}.zip"
   skip_cleanup: true
   on:
     tags: true
