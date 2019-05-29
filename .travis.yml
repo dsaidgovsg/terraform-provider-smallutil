@@ -53,9 +53,9 @@ matrix:
     - LDFLAGS=
 
 script:
-- printf -- "--------\n${GOOS}_${GOARCH} (ldflags: ${LDFLAGS})\n--------\n"
+- printf -- "--------\n${GOOS}_${GOARCH} (ldflag \"${LDFLAGS}\")\n--------\n"
 - go test ./...
-- env GOOS=${GOOS} GOARCH=${GOARCH} go build -v -ldflags "${LDFLAGS}"
+- go build -v -ldflags "${LDFLAGS}"
 - zip -j ${REPO_NAME}_${GOOS}_${GOARCH}.zip ${REPO_NAME}
 
 deploy:
