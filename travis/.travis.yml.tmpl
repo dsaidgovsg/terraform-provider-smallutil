@@ -13,46 +13,12 @@ matrix:
   include:
   # Do not use GOOS and GOARCH because Travis will reinitialize these env vars
   # when bootstrapping Golang set-up
+{%- for v in c %}
   - env:
-    - goos=linux
-    - goarch=386
-    - ldflags=""
-  - env:
-    - goos=linux
-    - goarch=amd64
-    - ldflags="-linkmode external -extldflags -static -s -w"
-  - env:
-    - goos=linux
-    - goarch=arm
-    - ldflags=""
-  - env:
-    - goos=linux
-    - goarch=arm64
-    - ldflags=""
-  - env:
-    - goos=darwin
-    - goarch=386
-    - ldflags=""
-  - env:
-    - goos=darwin
-    - goarch=amd64
-    - ldflags=""
-  - env:
-    - goos=darwin
-    - goarch=arm
-    - ldflags=""
-  - env:
-    - goos=darwin
-    - goarch=arm64
-    - ldflags=""
-  - env:
-    - goos=windows
-    - goarch=386
-    - ldflags=""
-  - env:
-    - goos=windows
-    - goarch=amd64
-    - ldflags=""
+    - goos={{ v.goos }}
+    - goarch={{ v.goarch }}
+    - ldflags="{{ v.ldflags }}"
+{%- endfor %}
 
 script:
 - printf -- "--------\n${goos}_${goarch} (ldflag \"${ldflags}\")\n--------\n"
