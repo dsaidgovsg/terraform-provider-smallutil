@@ -20,7 +20,7 @@ matrix:
   - env:
     - goos=linux
     - goarch=amd64
-    - ldflags="-linkmode external -extldflags -static -s -w"
+    - ldflags=""
   - env:
     - goos=linux
     - goarch=arm
