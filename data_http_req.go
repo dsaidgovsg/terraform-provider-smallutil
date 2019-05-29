@@ -78,24 +78,30 @@ func dataHttpReqRead(d *schema.ResourceData, m interface{}) error {
 	}
 
 	client := &http.Client{}
+
+	// Only allow default value to be used when the error comes from
+	// HTTP request failure OR status code is not OK
+
+	getDefaultOrErr := func(err error) error {
+		if defaultVal == "" {
+			d.SetId("")
+			return err
+		}
+
+		d.Set("value", defaultVal)
+		return nil
+	}
+
 	rsp, err := client.Do(req)
 	if err != nil {
-		d.SetId("")
-		return err
+		return getDefaultOrErr(err)
 	}
 
 	defer rsp.Body.Close()
 
 	// Check for response status code before proceeding
 	if rsp.StatusCode != http.StatusOK {
-		if defaultVal == "" {
-			d.SetId("")
-			return fmt.Errorf("Response returned status code %d, and default value is not set", rsp.StatusCode)
-		} else {
-			// Make default value also exception case and return early
-			d.Set("value", defaultVal)
-			return nil
-		}
+		return getDefaultOrErr(fmt.Errorf("Response returned status code %d, and default value is not set", rsp.StatusCode))
 	}
 
 	body, err := ioutil.ReadAll(rsp.Body)
