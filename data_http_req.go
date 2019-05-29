@@ -10,44 +10,64 @@ import (
 	"github.com/hashicorp/terraform/helper/schema"
 )
 
-func dataHttpReq() *schema.Resource {
+const (
+	defaultSource  = "default"
+	overrideSource = "override"
+	requestSource  = "request"
+
+	urlKey                    = "url"
+	methodKey                 = "method"
+	responseContentTypeKey    = "response_content_type"
+	responseContentJSONKeyKey = "response_content_json_key"
+	defaultKey                = "default"
+	overrideKey               = "override"
+	valueKey                  = "value"
+	sourceKey                 = "source"
+)
+
+func dataHTTPReq() *schema.Resource {
 	return &schema.Resource{
-		Read: dataHttpReqRead,
+		Read: dataHTTPReqRead,
 
 		Schema: map[string]*schema.Schema{
-			"url": &schema.Schema{
+			urlKey: &schema.Schema{
 				Type:     schema.TypeString,
 				Required: true,
 			},
 
-			"method": &schema.Schema{
+			methodKey: &schema.Schema{
 				Type:     schema.TypeString,
 				Optional: true,
 				Default:  "GET",
 			},
 
-			"response_content_type": &schema.Schema{
+			responseContentTypeKey: &schema.Schema{
 				Type:     schema.TypeString,
 				Optional: true,
 				Default:  "text/plain",
 			},
 
-			"response_content_json_key": &schema.Schema{
+			responseContentJSONKeyKey: &schema.Schema{
 				Type:     schema.TypeString,
 				Optional: true,
 			},
 
-			"default": &schema.Schema{
+			defaultKey: &schema.Schema{
 				Type:     schema.TypeString,
 				Optional: true,
 			},
 
-			"override": &schema.Schema{
+			overrideKey: &schema.Schema{
 				Type:     schema.TypeString,
 				Optional: true,
 			},
 
-			"value": &schema.Schema{
+			valueKey: &schema.Schema{
+				Type:     schema.TypeString,
+				Computed: true,
+			},
+
+			sourceKey: &schema.Schema{
 				Type:     schema.TypeString,
 				Computed: true,
 			},
@@ -55,19 +75,20 @@ func dataHttpReq() *schema.Resource {
 	}
 }
 
-func dataHttpReqRead(d *schema.ResourceData, m interface{}) error {
-	url := d.Get("url").(string)
-	method := d.Get("method").(string)
-	rspContentType := d.Get("response_content_type").(string)
-	rspContentJSONKey := d.Get("response_content_json_key").(string)
-	defaultVal := d.Get("default").(string)
-	override := d.Get("override").(string)
+func dataHTTPReqRead(d *schema.ResourceData, m interface{}) error {
+	url := d.Get(urlKey).(string)
+	method := d.Get(methodKey).(string)
+	rspContentType := d.Get(responseContentTypeKey).(string)
+	rspContentJSONKey := d.Get(responseContentJSONKeyKey).(string)
+	defaultVal := d.Get(defaultKey).(string)
+	overrideVal := d.Get(overrideKey).(string)
 
-	d.SetId(hashString(url, method, rspContentType, rspContentJSONKey, defaultVal, override))
+	d.SetId(hashString(url, method, rspContentType, rspContentJSONKey, defaultVal, overrideVal))
 
 	// Make override case exceptional and return early
-	if override != "" {
-		d.Set("value", override)
+	if overrideVal != "" {
+		d.Set(valueKey, overrideVal)
+		d.Set(sourceKey, overrideSource)
 		return nil
 	}
 
@@ -88,7 +109,8 @@ func dataHttpReqRead(d *schema.ResourceData, m interface{}) error {
 			return err
 		}
 
-		d.Set("value", defaultVal)
+		d.Set(valueKey, defaultVal)
+		d.Set(sourceKey, defaultSource)
 		return nil
 	}
 
@@ -141,10 +163,11 @@ func dataHttpReqRead(d *schema.ResourceData, m interface{}) error {
 		}
 	}
 
-	if err := d.Set("value", value); err != nil {
+	if err := d.Set(valueKey, value); err != nil {
 		d.SetId("")
 		return err
 	}
 
+	d.Set(sourceKey, requestSource)
 	return nil
 }

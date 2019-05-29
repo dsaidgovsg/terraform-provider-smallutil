@@ -7,7 +7,7 @@ import (
 func Provider() *schema.Provider {
 	return &schema.Provider{
 		DataSourcesMap: map[string]*schema.Resource{
-			"smallutil_http_req": dataHttpReq(),
+			"smallutil_http_req": dataHTTPReq(),
 		},
 	}
 }
