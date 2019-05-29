@@ -10,48 +10,49 @@ env:
 
 matrix:
   include:
-    - env:
-      - GOOS="linux"
-      - GOARCH="386"
-      - LDFLAGS="-linkmode external -extldflags -static -s -w"
-    - env:
-      - GOOS="linux"
-      - GOARCH="amd64"
-      - LDFLAGS="-linkmode external -extldflags -static -s -w"
-    - env:
-      - GOOS="linux"
-      - GOARCH="arm"
-      - LDFLAGS="-linkmode external -extldflags -static -s -w"
-    - env:
-      - GOOS="linux"
-      - GOARCH="arm64"
-      - LDFLAGS="-linkmode external -extldflags -static -s -w"
-    - env:
-      - GOOS="darwin"
-      - GOARCH="386"
-      - LDFLAGS="-linkmode external -extldflags -static -s -w"
-    - env:
-      - GOOS="darwin"
-      - GOARCH="amd64"
-      - LDFLAGS="-linkmode external -extldflags -static -s -w"
-    - env:
-      - GOOS="darwin"
-      - GOARCH="arm"
-      - LDFLAGS="-linkmode external -extldflags -static -s -w"
-    - env:
-      - GOOS="darwin"
-      - GOARCH="arm64"
-      - LDFLAGS="-linkmode external -extldflags -static -s -w"
-    - env:
-      - GOOS="windows"
-      - GOARCH="386"
-      - LDFLAGS="-linkmode external -extldflags -static -s -w"
-    - env:
-      - GOOS="windows"
-      - GOARCH="amd64"
-      - LDFLAGS="-linkmode external -extldflags -static -s -w"
-  
+  - env:
+    - GOOS=linux
+    - GOARCH=386
+    - LDFLAGS=
+  - env:
+    - GOOS=linux
+    - GOARCH=amd64
+    - LDFLAGS=-linkmode external -extldflags -static -s -w
+  - env:
+    - GOOS=linux
+    - GOARCH=arm
+    - LDFLAGS=
+  - env:
+    - GOOS=linux
+    - GOARCH=arm64
+    - LDFLAGS=
+  - env:
+    - GOOS=darwin
+    - GOARCH=386
+    - LDFLAGS=
+  - env:
+    - GOOS=darwin
+    - GOARCH=amd64
+    - LDFLAGS=
+  - env:
+    - GOOS=darwin
+    - GOARCH=arm
+    - LDFLAGS=
+  - env:
+    - GOOS=darwin
+    - GOARCH=arm64
+    - LDFLAGS=
+  - env:
+    - GOOS=windows
+    - GOARCH=386
+    - LDFLAGS=
+  - env:
+    - GOOS=windows
+    - GOARCH=amd64
+    - LDFLAGS=
+
 script:
+- printf "--------\n${GOOS}_${GOARCH} (ldflags ${LDFLAGS})\n--------\n"
 - go test ./...
 - env GOOS=${GOOS} GOARCH=${GOARCH} go build -v -ldflags "${LDFLAGS}"
 - zip -j ${REPO_NAME}_${GOOS}_${GOARCH}.zip ${REPO_NAME}

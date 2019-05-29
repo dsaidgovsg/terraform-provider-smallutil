@@ -4,5 +4,6 @@ if ! which tera >/dev/null; then
     return 1
 fi
 
-tera -f .travis.yml.tmpl --yaml vars.yml > .travis.yml
+DIR="$(cd "$(dirname "$(readlink -f "$0")")" >/dev/null 2>&1 && pwd)"
+tera -f "${DIR}/.travis.yml.tmpl" --yaml "${DIR}/vars.yml" > "${DIR}/../.travis.yml"
 echo "Successfully applied template into .travis.yml!"
