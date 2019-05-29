@@ -4,7 +4,7 @@
 
 - goos: linux
   goarch: 'amd64'
-  ldflags: '-linkmode external -extldflags -static -s -w'
+  ldflags:
 
 - goos: linux
   goarch: 'arm'
