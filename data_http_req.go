@@ -147,9 +147,9 @@ func dataHTTPReqRead(d *schema.ResourceData, m interface{}) error {
 			return errors.New("response_content_json_key must begin with \".\"")
 		}
 
-		m := map[string]interface{}{}
+		bodyMap := map[string]interface{}{}
 
-		if err := json.Unmarshal(body, &m); err != nil {
+		if err := json.Unmarshal(body, &bodyMap); err != nil {
 			d.SetId("")
 			return err
 		}
@@ -157,7 +157,7 @@ func dataHTTPReqRead(d *schema.ResourceData, m interface{}) error {
 		key := rspContentJSONKey[1:]
 		var ok bool
 
-		if value, ok = m[key].(string); !ok {
+		if value, ok = bodyMap[key].(string); !ok {
 			d.SetId("")
 			return fmt.Errorf("%s does not contain any value", rspContentJSONKey)
 		}
