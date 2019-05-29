@@ -17,7 +17,7 @@ matrix:
   - env:
     - goos={{ v.goos }}
     - goarch={{ v.goarch }}
-    - ldflags={{ v.ldflags }}
+    - ldflags="{{ v.ldflags }}"
 {%- endfor %}
 
 script:

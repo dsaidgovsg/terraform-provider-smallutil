@@ -16,43 +16,43 @@ matrix:
   - env:
     - goos=linux
     - goarch=386
-    - ldflags=
+    - ldflags=""
   - env:
     - goos=linux
     - goarch=amd64
-    - ldflags=-linkmode external -extldflags -static -s -w
+    - ldflags="-linkmode external -extldflags -static -s -w"
   - env:
     - goos=linux
     - goarch=arm
-    - ldflags=
+    - ldflags=""
   - env:
     - goos=linux
     - goarch=arm64
-    - ldflags=
+    - ldflags=""
   - env:
     - goos=darwin
     - goarch=386
-    - ldflags=
+    - ldflags=""
   - env:
     - goos=darwin
     - goarch=amd64
-    - ldflags=
+    - ldflags=""
   - env:
     - goos=darwin
     - goarch=arm
-    - ldflags=
+    - ldflags=""
   - env:
     - goos=darwin
     - goarch=arm64
-    - ldflags=
+    - ldflags=""
   - env:
     - goos=windows
     - goarch=386
-    - ldflags=
+    - ldflags=""
   - env:
     - goos=windows
     - goarch=amd64
-    - ldflags=
+    - ldflags=""
 
 script:
 - printf -- "--------\n${goos}_${goarch} (ldflag \"${ldflags}\")\n--------\n"
