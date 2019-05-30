@@ -16,7 +16,13 @@ Currently the following data sources are supported:
 
 ## How to install
 
-You can simply visit the
+For Linux and Mac OSX users, simply run:
+
+```bash
+curl -sL https://raw.githubusercontent.com/guangie88/terraform-provider-smallutil/master/install_from_release.sh | bash
+```
+
+Alternatively, you can visit the
 [Releases](https://github.com/guangie88/terraform-provider-smallutil/releases)
 page and download the zip file corresponding to your OS and architecture.
 
