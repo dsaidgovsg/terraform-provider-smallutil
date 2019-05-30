@@ -1,11 +1,13 @@
-package main
+package smallutil
 
 import (
+	"crypto"
 	"encoding/json"
 	"errors"
 	"fmt"
 	"io/ioutil"
 	"net/http"
+	"reflect"
 
 	"github.com/hashicorp/terraform/helper/schema"
 )
@@ -24,6 +26,19 @@ const (
 	valueKey                  = "value"
 	sourceKey                 = "source"
 )
+
+func hash(objs ...interface{}) []byte {
+	digester := crypto.MD5.New()
+	for _, ob := range objs {
+		fmt.Fprint(digester, reflect.TypeOf(ob))
+		fmt.Fprint(digester, ob)
+	}
+	return digester.Sum(nil)
+}
+
+func hashString(objs ...interface{}) string {
+	return string(hash(objs))
+}
 
 func dataHTTPReq() *schema.Resource {
 	return &schema.Resource{
