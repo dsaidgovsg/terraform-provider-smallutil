@@ -26,14 +26,30 @@ output "plain_tag" {
   value = "${data.smallutil_http_req.plain_tag.value}"
 }
 
+output "plain_tag_source" {
+  value = "${data.smallutil_http_req.plain_tag.source}"
+}
+
 output "json_tag" {
   value = "${data.smallutil_http_req.json_tag.value}"
+}
+
+output "json_tag_source" {
+  value = "${data.smallutil_http_req.json_tag.source}"
 }
 
 output "failed_tag" {
   value = "${data.smallutil_http_req.failed_tag.value}"
 }
 
+output "failed_tag_source" {
+  value = "${data.smallutil_http_req.failed_tag.source}"
+}
+
 output "override_tag" {
   value = "${data.smallutil_http_req.override_tag.value}"
+}
+
+output "override_tag_source" {
+  value = "${data.smallutil_http_req.override_tag.source}"
 }
