@@ -22,6 +22,9 @@ For Linux and Mac OSX users, simply run:
 curl -sL https://raw.githubusercontent.com/guangie88/terraform-provider-smallutil/master/install_from_release.sh | bash
 ```
 
+This will install the latest version of the plugin and place it into your
+Terraform plugin directory (creates the directory if it doesn't exist).
+
 Alternatively, you can visit the
 [Releases](https://github.com/guangie88/terraform-provider-smallutil/releases)
 page and download the zip file corresponding to your OS and architecture.
