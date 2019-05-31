@@ -80,5 +80,5 @@ deploy:
 branches:
   only:
   - master
-  - release-v\d+\.\d+\.\d+(-\S*)?
+  - /^release-v.+\..+\..+$/
   - /^v\d+\.\d+\.\d+(-\S*)?$/
