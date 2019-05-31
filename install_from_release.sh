@@ -25,7 +25,7 @@ else
   exit 1
 fi
 
-ARCH_CALL="$(uname -i)"
+ARCH_CALL="$(uname -m)"
 if [[ "${ARCH_CALL}" == i*86 ]]; then
   ARCH=386
 elif [[ "${ARCH_CALL}" == x86_64* ]]; then

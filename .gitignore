@@ -1,5 +1,6 @@
 terraform-provider-smallutil
 terraform-provider-smallutil.exe
+terraform-provider-smallutil_*.zip
 
 tf_test/*
 !tf_test/main.tf
