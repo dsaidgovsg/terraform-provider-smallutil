@@ -57,7 +57,8 @@ matrix:
 script:
 - printf -- "--------\n${goos}_${goarch} (ldflag \"${ldflags}\")\n--------\n"
 - go test ./...
-- env goos=${goos} goarch=${goarch} go build -v -ldflags "${ldflags}"
+- env GOOS=${goos} GOARCH=${goarch} go build -v -ldflags "${ldflags}"
+- file ${REPO_NAME}
 - |-
   if [ -z "${TRAVIS_TAG}" ]; then
     TAG_SUFFIX=
@@ -79,4 +80,5 @@ deploy:
 branches:
   only:
   - master
+  - release-v\d+\.\d+\.\d+(-\S*)?
   - /^v\d+\.\d+\.\d+(-\S*)?$/
