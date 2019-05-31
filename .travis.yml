@@ -50,13 +50,13 @@ script:
 - printf -- "--------\n${goos}_${goarch} (ldflag \"${ldflags}\")\n--------\n"
 - go test ./...
 - env GOOS=${goos} GOARCH=${goarch} go build -v -ldflags "${ldflags}"
-- file ${REPO_NAME}
 - |-
   if [ "${goos}" = "windows" ]; then
     EXE_SUFFIX=".exe"
   else
     EXE_SUFFIX=
   fi
+- file ${REPO_NAME}${EXE_SUFFIX}
 - |-
   if [ -z "${TRAVIS_TAG}" ]; then
     TAG_SUFFIX=
