@@ -22,14 +22,6 @@
   goarch: 'amd64'
   ldflags:
 
-- goos: darwin
-  goarch: 'arm'
-  ldflags:
-
-- goos: darwin
-  goarch: 'arm64'
-  ldflags:
-
 - goos: windows
   goarch: '386'
   ldflags:
