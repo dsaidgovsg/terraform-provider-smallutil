@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
+	"strconv"
 
 	"github.com/hashicorp/terraform/helper/schema"
 )
@@ -157,9 +158,33 @@ func dataHTTPReqRead(d *schema.ResourceData, m interface{}) error {
 		key := rspContentJSONKey[1:]
 		var ok bool
 
-		if value, ok = bodyMap[key].(string); !ok {
-			d.SetId("")
-			return fmt.Errorf("%s does not contain any value", rspContentJSONKey)
+		// string
+		value, ok = bodyMap[key].(string)
+
+		// number
+		if !ok {
+			var valueRep int
+			valueRep, ok = bodyMap[key].(int)
+			value = string(valueRep)
+
+			if !ok {
+				var valueRep float64
+				valueRep, ok = bodyMap[key].(float64)
+				value = fmt.Sprintf("%f", valueRep)
+
+				// boolean
+				if !ok {
+					var valueRep bool
+					valueRep, ok = bodyMap[key].(bool)
+					value = strconv.FormatBool(valueRep)
+
+					// No other type left, so return error
+					if !ok {
+						d.SetId("")
+						return fmt.Errorf("%s does not contain any value, or has invalid value type", rspContentJSONKey)
+					}
+				}
+			}
 		}
 	}
 
