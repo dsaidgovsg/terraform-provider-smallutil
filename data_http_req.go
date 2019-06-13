@@ -163,26 +163,20 @@ func dataHTTPReqRead(d *schema.ResourceData, m interface{}) error {
 
 		// number
 		if !ok {
-			var valueRep int
-			valueRep, ok = bodyMap[key].(int)
-			value = string(valueRep)
+			var valueRep float64
+			valueRep, ok = bodyMap[key].(float64)
+			value = fmt.Sprintf("%g", valueRep)
 
+			// boolean
 			if !ok {
-				var valueRep float64
-				valueRep, ok = bodyMap[key].(float64)
-				value = fmt.Sprintf("%f", valueRep)
+				var valueRep bool
+				valueRep, ok = bodyMap[key].(bool)
+				value = strconv.FormatBool(valueRep)
 
-				// boolean
+				// No other type left, so return error
 				if !ok {
-					var valueRep bool
-					valueRep, ok = bodyMap[key].(bool)
-					value = strconv.FormatBool(valueRep)
-
-					// No other type left, so return error
-					if !ok {
-						d.SetId("")
-						return fmt.Errorf("%s does not contain any value, or has invalid value type", rspContentJSONKey)
-					}
+					d.SetId("")
+					return fmt.Errorf("%s does not contain any value, or has invalid value type", rspContentJSONKey)
 				}
 			}
 		}
