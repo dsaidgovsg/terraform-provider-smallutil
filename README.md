@@ -79,11 +79,19 @@ Terraform provider module.
 
 You will need [Terraform](https://www.terraform.io/) CLI.
 
-After building, run the following to move the Terraform provider module to the
-test directory:
+Build the Terraform provider module first:
 
 ```bash
-mv terraform-provider-smallutil tf_test/
+go build
+```
+
+After building, run the following to move the Terraform provider module to the provider directory:
+
+```bash
+mkdir -p ~/.terraform.d/plugins/github.com/guangie88/smallutil/0.4.3-localtest.1/{OS_ARCH}/
+mv terraform-provider-smallutil ~/.terraform.d/plugins/github.com/guangie88/smallutil/0.4.3-localtest.1/{OS_ARCH}/
+# example:
+# mv terraform-provider-smallutil ~/.terraform.d/plugins/github.com/guangie88/smallutil/0.4.3-localtest.1/darwin_arm64/
 ```
 
 After that, you will need to terminals, one to run the test server, and one
