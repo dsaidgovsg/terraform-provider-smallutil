@@ -1,6 +1,6 @@
 go version  # go version go1.15.7 linux/amd6
 
-tag="v0.4.2"
+tag="v0.4.3"
 for osarch in \
   linux,amd64 \
   linux,386 \

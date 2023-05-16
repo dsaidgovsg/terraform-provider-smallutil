@@ -1,3 +1,12 @@
+terraform {
+  required_providers {
+    smallutil = {
+      source  = "github.com/guangie88/smallutil"
+      version = "~> 0.4.3-localtest.1"
+    }
+  }
+}
+
 provider "smallutil" {
 }
 
